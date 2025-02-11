@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace bbc.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin)]      
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -22,8 +22,8 @@ namespace bbc.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
-          
+            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+
             return View(objProductList);
         }
         public IActionResult Upsert(int? id)
@@ -45,12 +45,12 @@ namespace bbc.Areas.Admin.Controllers
             else
             {
                 //update if id != 0
-                productVM.Product=_unitOfWork.Product.Get(u=>u.Id==id);
+                productVM.Product = _unitOfWork.Product.Get(u => u.Id == id);
                 return View(productVM);
             }
         }
         [HttpPost]
-        public IActionResult Upsert(ProductVM productVM, IFormFile? file)
+        public IActionResult Upsert(ProductVM productVM, IFormFile? file, IFormFile? previewFile)
         {
             if (ModelState.IsValid)
             {
@@ -79,6 +79,38 @@ namespace bbc.Areas.Admin.Controllers
 
                     productVM.Product.ImageUrl = @"\images\product\" + fileName;
                 }
+
+                // --- Begin Preview File Upload ---
+                if (previewFile != null)
+                {
+                    string previewFileName = Guid.NewGuid().ToString() + Path.GetExtension(previewFile.FileName);
+                    string previewPath = Path.Combine(wwwRootPath, @"PreviewPdfs\product");
+
+                    if (!Directory.Exists(previewPath))
+                    {
+                        Directory.CreateDirectory(previewPath);
+                    }
+
+                    if (!string.IsNullOrEmpty(productVM.Product.PreviewUrl))
+                    {
+                        //delete the old preview file
+                        var oldPreviewPath =
+                            Path.Combine(wwwRootPath, productVM.Product.PreviewUrl.TrimStart('\\'));
+
+                        if (System.IO.File.Exists(oldPreviewPath))
+                        {
+                            System.IO.File.Delete(oldPreviewPath);
+                        }
+                    }
+
+                    using (var previewStream = new FileStream(Path.Combine(previewPath, previewFileName), FileMode.Create))
+                    {
+                        previewFile.CopyTo(previewStream);
+                    }
+
+                    productVM.Product.PreviewUrl = @"\PreviewPdfs\product\" + previewFileName;
+                }
+                // --- End Preview File Upload ---
 
                 if (productVM.Product.Id == 0)
                 {

@@ -41,6 +41,10 @@ namespace bb.DataAccess.Repository
                 {
                     objFromDb.ImageUrl = obj.ImageUrl;
                 }
+                if (obj.PreviewUrl != null)
+                {
+                    objFromDb.PreviewUrl = obj.PreviewUrl;
+                }
             }
         }
     }

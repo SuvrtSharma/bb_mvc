@@ -1,36 +1,107 @@
 ﻿@model IEnumerable<Product>
 
-<div class="row pb-3">
-	@foreach (var product in Model)
-	{
-		<div class="col-lg-3 col-sm-6">
-			<div class="row p-2">
-				<div class="col-12 p-1">
-					<div class="card-border-0 p-3 shadow border-top border-5 rounded">
-						<img src="@product.ImageUrl" class="card-img-top rounded" />
-						<div class="card-body pb-0">
-							<div class="pl-1">
-								<p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@product.Title</p>
-								<p class="card-title text-warning text-center">by<b>@product.Author</b></p>
-							</div>
-							<div class="pl-1">
-								<p class="text-dark text-opacity-75 text-center">List Price: <span class="text-decoration-line-through">@product.ListPrice.ToString("c")</span></p>
-							</div>
-							<div class="pl-1">
-								<p class="text-dark text-opacity-75 text-center">As low as: <span>@product.Price100.ToString("c")</span></p>
-							</div>
+<style>
+    /* Base styling for a retro look */
+    body, html {
+        background-color: #f5f5f5; /* light background for contrast */
+        font-family: 'Courier New', Courier, monospace;
+        color: #000;
+    }
+    /* Retro card styling */
+    .retro-card {
+        background: #fff;
+        border: 2px solid #000;
+        box-shadow: 4px 4px 0 #000;
+        border-radius: 0;
+        margin-bottom: 20px;
+        padding: 1rem;
+        transition: transform 0.3s ease;
+    }
 
-						</div>
-						<div>
-							<a asp-action="Details"
-							asp-route-productId="@product.Id"
-							class="btn btn-primary bg-gradient border-0 form-control">
-								Details
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	}
+        .retro-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .retro-card img {
+            filter: grayscale(100%);
+            border-bottom: 2px solid #000;
+            width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+            transition: filter 0.5s ease-in-out;
+        }
+        /* On hover, remove the grayscale filter to reveal colors */
+        .retro-card:hover img {
+            filter: grayscale(0%);
+        }
+    /* Typography */
+    .retro-title {
+        font-size: 1.2em;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .retro-author {
+        font-size: 1em;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .retro-price {
+        font-size: 0.9em;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    /* Retro button style */
+    .btn-retro {
+        background-color: #000;
+        color: #fff;
+        font-family: 'Courier New', Courier, monospace;
+        border: 2px solid #000;
+        text-transform: uppercase;
+        padding: 0.5rem;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .btn-retro:hover {
+            background-color: #fff;
+            color: #000;
+        }
+</style>
+
+<div class="row pb-3">
+    @foreach (var product in Model)
+    {
+        <div class="col-lg-3 col-sm-6">
+            <div class="row p-2">
+                <div class="col-12 p-1">
+                    <div class="retro-card">
+                        <img src="@product.ImageUrl" alt="@product.Title" />
+                        <div class="card-body pb-0">
+                            <p class="retro-title">@product.Title</p>
+                            <p class="retro-author">by <strong>@product.Author</strong></p>
+                            <p class="retro-price">
+                                List Price:
+                                <span style="text-decoration: line-through;">
+                                    @product.ListPrice.ToString("c")
+                                </span>
+                            </p>
+                            <p class="retro-price">
+                                As low as: <span>@product.Price100.ToString("c")</span>
+                            </p>
+                        </div>
+                        <div>
+                            <a asp-action="Details"
+                               asp-route-productId="@product.Id"
+                               class="btn-retro form-control">
+                                Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>

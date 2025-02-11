@@ -50,6 +50,10 @@ namespace bb.Models
         [ValidateNever]
         public string ImageUrl {  get; set; }
 
+        [ValidateNever]
+        [Display(Name = "Preview URL")]
+        public string? PreviewUrl { get; set; } // URL to the PDF preview file
+
 
     }
 }

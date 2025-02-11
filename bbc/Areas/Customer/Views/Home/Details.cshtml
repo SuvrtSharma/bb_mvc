@@ -1,99 +1,178 @@
 ﻿@model Product
 
+<style>
+    /* Base Styling */
+    body, html {
+        background-color: #f5f5f5;
+        font-family: 'Courier New', Courier, monospace;
+        color: #000;
+    }
+    /* Retro Card Container */
+    .retro-card {
+        background: #fff;
+        border: 2px solid #000;
+        box-shadow: 4px 4px 0 #000;
+        border-radius: 0;
+        margin: 20px auto;
+        padding: 1rem;
+    }
+    /* Retro Header */
+    .retro-header {
+        background: #000;
+        color: #fff;
+        padding: 1rem;
+        text-align: center;
+    }
+
+        .retro-header h3 {
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .retro-header p {
+            opacity: 0.75;
+            margin: 0;
+        }
+    /* Grayscale Image with Hover Reveal */
+    .retro-img {
+        filter: grayscale(100%);
+        transition: filter 0.5s ease-in-out;
+        width: 100%;
+        border: 2px solid #000;
+    }
+
+        .retro-img:hover {
+            filter: grayscale(0%);
+        }
+    /* Retro Buttons */
+    .retro-btn {
+        background-color: #000;
+        color: #fff;
+        border: 2px solid #000;
+        text-transform: uppercase;
+        font-family: 'Courier New', Courier, monospace;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        padding: 0.5rem 1rem;
+        display: inline-block;
+    }
+
+        .retro-btn:hover {
+            background-color: #fff;
+            color: #000;
+        }
+    /* Retro Badge for Category */
+    .retro-badge {
+        background-color: #000;
+        color: #fff;
+        padding: 0.3rem 0.6rem;
+        border-radius: 15px;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+    }
+    /* Price styling */
+    .retro-price-old {
+        text-decoration: line-through;
+    }
+    /* Table-like rows with solid borders */
+    .retro-table div {
+        border-bottom: 2px solid #000;
+    }
+</style>
+
 <form method="post">
-    <div class="card shadow border-0 mt-4 mb-4">
-        <div class="card-header bg-secondary bg-gradient text-light py-4">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h3 class="text-white text-uppercase">@Model.Title</h3>
-                    <p class="text-white-50 fw-semibold mb-0">by @Model.Author</p>
-                </div>
-            </div>
+    <div class="retro-card mt-4 mb-4">
+        <div class="retro-header py-4">
+            <h3>@Model.Title</h3>
+            <p>by @Model.Author</p>
         </div>
         <div class="card-body">
             <div class="py-3">
+                <!-- Navigation -->
                 <div class="row">
                     <div class="col-6 col-md-2 offset-lg-1 pb-1">
-                        <a  asp-action="Index" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase">
+                        <a asp-action="Index" class="retro-btn mb-5 fw-semibold btn-sm text-uppercase">
                             <small>Back to home</small>
                         </a>
                     </div>
                 </div>
                 <div class="row">
+                    <!-- Product Image -->
                     <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-                        <img src="@Model.ImageUrl" width="100%" class="rounded" />
+                        <img src="@Model.ImageUrl" alt="@Model.Title" class="retro-img rounded" />
                     </div>
+                    <!-- Product Details -->
                     <div class="col-12 col-lg-6 offset-lg-1">
-
                         <div class="col-12 col-md-6 pb-4">
-                            <span class="badge-pill">@Model.Category.Name</span>
+                            <span class="retro-badge">@Model.Category.Name</span>
                         </div>
                         <div class="row ps-2">
-                            <h6 class="text-dark text-opacity-50 ">ISBN : @Model.ISBN</h6>
+                            <h6 class="text-dark text-opacity-50">ISBN : @Model.ISBN</h6>
                         </div>
                         <div class="row ps-2">
-                            <h6 class="text-dark text-opacity-50  pb-2">
+                            <h6 class="text-dark text-opacity-50 pb-2">
                                 List Price:
-                                <span class="text-decoration-line-through">
-                                    @Model.ListPrice.ToString("c")
-                                </span>
+                                <span class="retro-price-old">@Model.ListPrice.ToString("c")</span>
                             </h6>
                         </div>
-                        <div class="row text-center ps-2">
-                            <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
-                                <div class="text-dark text-opacity-50 fw-semibold">Quantity</div>
+                        <!-- Price Table -->
+                        <div class="row text-center ps-2 retro-table">
+                            <div class="p-1 col-3 col-lg-2">
+                                <div class="text-dark fw-semibold">Quantity</div>
                             </div>
-                            <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
-                                <div class="text-dark text-opacity-50 fw-semibold">1-50</div>
+                            <div class="p-1 col-3 col-lg-2">
+                                <div class="text-dark fw-semibold">1-50</div>
                             </div>
-                            <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
-                                <div class="text-dark text-opacity-50 fw-semibold">51-100</div>
+                            <div class="p-1 col-3 col-lg-2">
+                                <div class="text-dark fw-semibold">51-100</div>
                             </div>
-                            <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
-                                <div class="text-dark text-opacity-50 fw-semibold">100+</div>
-                            </div>
-                        </div>
-                        <div class="row text-center ps-2">
-                            <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                <div>Price</div>
-                            </div>
-                            <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                <div>@Model.Price.ToString("c")</div>
-                            </div>
-                            <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                <div>@Model.Price50.ToString("c")</div>
-                            </div>
-                            <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                <div>@Model.Price100.ToString("c")</div>
+                            <div class="p-1 col-3 col-lg-2">
+                                <div class="text-dark fw-semibold">100+</div>
                             </div>
                         </div>
-                        <div class="row pl-2 my-3">
+                        <div class="row text-center ps-2 retro-table">
+                            <div class="p-1 col-3 col-lg-2">
+                                <div class="text-dark fw-bold">Price</div>
+                            </div>
+                            <div class="p-1 col-3 col-lg-2">
+                                <div class="text-dark fw-bold">@Model.Price.ToString("c")</div>
+                            </div>
+                            <div class="p-1 col-3 col-lg-2">
+                                <div class="text-dark fw-bold">@Model.Price50.ToString("c")</div>
+                            </div>
+                            <div class="p-1 col-3 col-lg-2">
+                                <div class="text-dark fw-bold">@Model.Price100.ToString("c")</div>
+                            </div>
+                        </div>
+                        <!-- Description -->
+                        <div class="row my-3 pl-2">
                             <p class="text-secondary lh-sm">@Html.Raw(Model.Description)</p>
                         </div>
+                        <!-- Count Input -->
                         <div class="row pl-2 mb-3">
                             <div class="col-md-4">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text bg-primary text-white border-0 fw-semibold"
-                                          id="inputGroup-sizing-default">
+                                    <span class="input-group-text retro-btn fw-semibold" id="inputGroup-sizing-default">
                                         Count
                                     </span>
                                     <input type="number" value="1" class="form-control text-end"
                                            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-
                                 </div>
                             </div>
                         </div>
+                        <!-- Action Buttons -->
                         <div class="row">
                             <div class="col-12 col-md-6 pb-1">
-                                <a asp-area="Customer" asp-controller="Cart" asp-action="Add" asp-route-productId="@Model.Id" class="btn btn-primary bg-gradient w-100 py-2 text-uppercase fw-semibold">
+                                <a asp-area="Customer" asp-controller="Cart" asp-action="Add" asp-route-productId="@Model.Id" class="retro-btn w-100 py-2 text-uppercase fw-semibold">
                                     Add to Cart
                                 </a>
-
+                            </div>
+                            <div class="col-12 col-md-6 pb-1">
+                                <a href="@Model.PreviewUrl" target="_blank" class="retro-btn w-100 py-2 text-uppercase fw-semibold">
+                                    Preview Book
+                                </a>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>
