@@ -11,6 +11,7 @@ namespace bb.DataAccess.Repository.IRepository
     {
         void AddToCart(string userId, int productId, int quantity);
         void RemoveFromCart(string userId, int productId);
+        void ClearCart(string userId);
         IEnumerable<Cart> GetCartItems(string userId);
     }
 }

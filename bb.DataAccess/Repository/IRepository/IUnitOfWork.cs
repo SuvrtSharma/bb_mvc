@@ -11,6 +11,7 @@ namespace bb.DataAccess.Repository.IRepository
         ICategoryRepository Category { get; }
         IProductRepository Product { get; }
         ICartRepository Cart { get; }
+        IOrderRepository Order { get; }
         void Save();
 
     }

@@ -62,6 +62,12 @@ namespace bb.DataAccess.Repository
         {
             return _db.Carts.Where(c => c.UserId == userId).ToList();
         }
-
+        public void ClearCart(string userId)
+        {
+            // Get all cart items for the user
+            var cartItems = _db.Carts.Where(c => c.UserId == userId);
+            // Remove all of them at once
+            _db.Carts.RemoveRange(cartItems);
+        }
     }
 }

@@ -16,12 +16,15 @@ namespace bb.DataAccess.Data
         public DbSet<Product> Product { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Cart> Carts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
 
             base.OnModelCreating(modelBuilder);
+
 
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
@@ -117,6 +120,13 @@ namespace bb.DataAccess.Data
                 }
 
                 );
+
+            //adding order and order details---------------------------------------------//
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.OrderDetails)
+                .WithOne(od => od.Order)
+                .HasForeignKey(od => od.OrderId);
+            //-------------------------MIGHT NOT WORK ---------------------------------//
         }
 
     }

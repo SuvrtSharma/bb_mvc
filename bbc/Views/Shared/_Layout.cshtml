@@ -38,6 +38,10 @@
                                 <i class="bi bi-cart"></i> Cart
                             </a>
                         </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Customer" asp-controller="Orders" asp-action="Index">My Orders</a>
+                            </li>
+
                         }
 
                         @if(User.IsInRole(SD.Role_Admin))
