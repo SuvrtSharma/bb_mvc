@@ -46,3 +46,10 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+.fixed-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Ensures it stays on top of other elements */
+}

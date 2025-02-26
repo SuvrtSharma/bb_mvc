@@ -1,11 +1,8 @@
 ﻿using bb.DataAccess.Data;
 using bb.DataAccess.Repository.IRepository;
 using bb.DataAccess.Repository;
+using Microsoft.AspNetCore.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BulkyBook.DataAccess.Repository
 {
@@ -14,16 +11,15 @@ namespace BulkyBook.DataAccess.Repository
         private ApplicationDbContext _db;
         public ICategoryRepository Category { get; private set; }
         public IProductRepository Product { get; private set; }
-
         public ICartRepository Cart { get; private set; }
         public IOrderRepository Order { get; private set; }
 
-        public UnitOfWork(ApplicationDbContext db)
+        public UnitOfWork(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
-            Cart = new CartRepository(_db);
             Category = new CategoryRepository(_db);
-            Product = new ProductRepository(_db);
+            Product = new ProductRepository(_db, webHostEnvironment);
+            Cart = new CartRepository(_db);
             Order = new OrderRepository(_db);
         }
 

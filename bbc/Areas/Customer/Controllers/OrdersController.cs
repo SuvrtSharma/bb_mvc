@@ -23,5 +23,21 @@ namespace bb.Areas.Customer.Controllers
             var orders = _unitOfWork.Order.GetOrdersByUser(userId);
             return View(orders);
         }
+        public IActionResult VirtualBookshelf()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Get all orders for the current user
+            var orders = _unitOfWork.Order.GetOrdersByUser(userId);
+
+            // Flatten the list: get each product from the order details and remove duplicates
+            var orderedProducts = orders
+                .SelectMany(o => o.OrderDetails)
+                .Select(od => od.Product)
+                .Distinct()
+                .ToList();
+
+            return View(orderedProducts);
+        }
+
     }
 }

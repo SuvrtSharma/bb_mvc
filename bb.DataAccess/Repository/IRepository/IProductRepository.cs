@@ -10,9 +10,10 @@ namespace bb.DataAccess.Repository.IRepository
     public interface IProductRepository : IRepository<Product>
 
     {
-        object GetFirstOrDefault(Func<object, bool> value);
+        Product GetFirstOrDefault(Func<Product, bool> predicate);
         void Update(Product obj);
 
-
+        Task AddProductSubmissionAsync(ProductSubmission model);
+       
     }
 }

@@ -27,10 +27,16 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.AddRazorPages();
+
+// Register UnitOfWork...
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// **Register IProductRepository explicitly**
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
-// Configure Stripe settings by reading from configuration
+// Configure Stripe settings
 var stripeSettings = builder.Configuration.GetSection("Stripe");
 StripeConfiguration.ApiKey = stripeSettings["SecretKey"];
 
@@ -40,7 +46,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios.
     app.UseHsts();
 }
 

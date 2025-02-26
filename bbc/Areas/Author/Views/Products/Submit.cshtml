@@ -1,0 +1,87 @@
+﻿@model bb.Models.ProductSubmission
+
+@{
+    ViewData["Title"] = "Submit Your Book";
+}
+
+<h2>Submit Your Book</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<form asp-action="Submit" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ISBN"></label>
+        <input asp-for="ISBN" class="form-control" />
+        <span asp-validation-for="ISBN" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Author"></label>
+        <input asp-for="Author" class="form-control" />
+        <span asp-validation-for="Author" class="text-danger"></span>
+    </div>
+
+    <!-- Price fields -->
+    <div class="form-group">
+        <label asp-for="ListPrice"></label>
+        <input asp-for="ListPrice" class="form-control" />
+        <span asp-validation-for="ListPrice" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price50"></label>
+        <input asp-for="Price50" class="form-control" />
+        <span asp-validation-for="Price50" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price100"></label>
+        <input asp-for="Price100" class="form-control" />
+        <span asp-validation-for="Price100" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryId"></label>
+        <input asp-for="CategoryId" class="form-control" />
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+    <!-- File uploads -->
+    <div class="form-group">
+        <label asp-for="Image"></label>
+        <input asp-for="Image" type="file" class="form-control" />
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PreviewFile"></label>
+        <input asp-for="PreviewFile" type="file" class="form-control" />
+        <span asp-validation-for="PreviewFile" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EBookFile"></label>
+        <input asp-for="EBookFile" type="file" class="form-control" />
+        <span asp-validation-for="EBookFile" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

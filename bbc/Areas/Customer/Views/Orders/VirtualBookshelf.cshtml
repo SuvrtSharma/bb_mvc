@@ -1,0 +1,226 @@
+﻿@using bb.Utility
+@model IEnumerable<Product>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Virtual Bookshelf</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <!-- Optional: You can include additional responsive CSS if needed -->
+    <style>
+        /* Base and Bookshelf Styles */
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            background: url('/images/retro-library-table.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Courier New', Courier, monospace;
+            color: #000;
+        }
+
+        .book-wrapper {
+            max-width: 900px;
+            padding: 20px;
+            margin: 0 auto;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 4px 4px 0 #000;
+            border: 2px solid #000;
+        }
+
+        .book-items {
+            width: 100%;
+            max-width: 280px;
+            margin: 16px auto;
+            display: inline-block;
+            vertical-align: top;
+            position: relative;
+            cursor: move; /* indicates draggable item */
+        }
+
+        /* Adjust layout on small screens */
+        @@media (max-width: 576px) {
+            .book-items
+
+        {
+            max-width: 90%;
+        }
+
+        }
+
+        .main-book-wrap {
+            position: relative;
+        }
+
+        .book-cover {
+            position: relative;
+        }
+
+            .book-cover .book-inside {
+                position: absolute;
+                width: 90%;
+                height: 96%;
+                top: 1%;
+                left: 16px;
+                border: 1px solid grey;
+                border-radius: 2px 6px 6px 2px;
+                background: white;
+                box-shadow: 10px 40px 40px -10px rgba(0, 0, 0, 0.3), inset -2px 0 0 grey, inset -3px 0 0 #dbdbdb, inset -4px 0 0 white, inset -5px 0 0 #dbdbdb, inset -6px 0 0 white, inset -7px 0 0 #dbdbdb, inset -8px 0 0 white, inset -9px 0 0 #dbdbdb;
+            }
+
+            .book-cover .book-image {
+                line-height: 0;
+                position: relative;
+                border-radius: 2px 6px 6px 2px;
+                box-shadow: 6px 6px 18px -2px rgba(0, 0, 0, 0.2), 24px 28px 40px -6px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease-in-out;
+                transform: perspective(2000px) rotateY(-15deg) translateX(-10px) scaleX(0.94);
+            }
+
+        .book-image img {
+            width: 100%;
+            border-radius: 2px 6px 6px 2px;
+        }
+
+        .book-image:hover {
+            transform: perspective(2000px) rotateY(0deg) translateX(0) scaleX(1);
+            transform-style: preserve-3d;
+            box-shadow: 6px 6px 12px rgba(0,0,0,0.1), 20px 14px 16px -6px rgba(0,0,0,0.1);
+        }
+
+        .effect {
+            position: absolute;
+            width: 20px;
+            height: 100%;
+            margin-left: 16px;
+            top: 0;
+            border-left: 2px solid rgba(0,0,0,0.06);
+            background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+            transition: all 0.5s ease;
+            z-index: 5;
+        }
+
+        .light {
+            width: 90%;
+            height: 100%;
+            position: absolute;
+            border-radius: 3px;
+            background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 100%);
+            top: 0;
+            right: 0;
+            opacity: 0.1;
+            transition: all 0.5s ease;
+            z-index: 4;
+        }
+
+        .book-image:hover .effect {
+            margin-left: 14px;
+        }
+
+        .book-details {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .retro-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .retro-author {
+            font-size: 1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-retro {
+            background: linear-gradient(145deg, #ffffff, #e0e0e0);
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            color: #000;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 0.5rem;
+            text-transform: uppercase;
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            transform: perspective(2000px) rotateY(-15deg) translateX(-10px) scaleX(0.94);
+        }
+
+            .btn-retro:hover {
+                background: linear-gradient(145deg, #e0e0e0, #ffffff);
+                transform: perspective(2000px) rotateY(0deg) translateX(0) scaleX(1);
+                box-shadow: 6px 6px 12px rgba(0,0,0,0.2);
+            }
+    </style>
+</head>
+<body>
+    <div class="book-wrapper" id="bookshelf">
+        @foreach (var product in Model)
+        {
+            <div class="book-items" data-id="@product.Id">
+                <div class="main-book-wrap">
+                    <!-- Wrap the book cover with a link to the eBook -->
+                    <a href="@Url.Content(product.EBook)" target="_blank">
+                        <div class="book-cover">
+                            <div class="book-inside"></div>
+                            <div class="book-image">
+                                <img src="@product.ImageUrl" alt="@product.Title" />
+                                <div class="effect"></div>
+                                <div class="light"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="book-details">
+                        <p class="retro-title">@product.Title</p>
+                        <p class="retro-author">by <strong>@product.Author</strong></p>
+                        <a href="@Url.Content(product.EBook)" target="_blank" class="btn-retro">Read E-Book</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Include SortableJS from CDN for touch-friendly drag-and-drop -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var bookshelf = document.getElementById("bookshelf");
+            // Initialize SortableJS on the bookshelf container
+            Sortable.create(bookshelf, {
+                animation: 150,
+                // Called when the order has changed
+                onEnd: function (evt) {
+                    var order = [];
+                    // Collect the new order of book IDs
+                    document.querySelectorAll('.book-items').forEach(function (item) {
+                        order.push(item.getAttribute('data-id'));
+                    });
+                    // Send the new order to the server via AJAX
+                    fetch("/api/bookshelf/updateorder", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(order)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log("Order updated successfully.");
+                        } else {
+                            console.error("Error updating order.");
+                        }
+                    })
+                    .catch(error => console.error("Error: ", error));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
